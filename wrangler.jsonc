@@ -1,0 +1,13 @@
+{
+  // ⚠️ مهم جداً: لازم "name" يكون نفس اسم الـ Worker الموجود عندك بالـ Dashboard.
+  // شوف الاسم بأعلى صفحة الـ Worker (تبويب Overview). إذا اسمه "montaqim-" بشرطة،
+  // غيّر السطر اللي تحت لـ "montaqim-" بالضبط، وإلا راح ينشر على Worker ثاني.
+  "name": "montaqim",
+
+  "compatibility_date": "2026-06-14",
+
+  "assets": {
+    "directory": "./public",
+    "not_found_handling": "single-page-application"
+  }
+}
