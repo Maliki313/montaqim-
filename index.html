@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- ============ عدّل هذي المعلومات حسب البوت ============ -->
+  <title>منتقم — مساعدك الذكي على تيليجرام</title>
+  <meta name="description" content="منتقم: بوت تيليجرام مدعوم بالذكاء الاصطناعي. كلّمه أو أضِفه لمجموعتك ليجاوبك ويساعدك بالعربي وبسرعة، 24/7." />
+  <meta name="theme-color" content="#0A0F1E" />
+
+  <!-- Open Graph (مشاركة الرابط) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="منتقم — مساعدك الذكي على تيليجرام" />
+  <meta property="og:description" content="بوت تيليجرام بالذكاء الاصطناعي. ابدأ الآن من montaqim.com" />
+  <meta property="og:url" content="https://montaqim.com" />
+  <!-- ===================================================== -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Reem+Kufi:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --ink:    #0A0F1E;
+      --ink-2:  #0F1726;
+      --ink-3:  #15203A;
+      --line:   rgba(255,255,255,.09);
+      --line-2: rgba(255,255,255,.14);
+      --text:   #ECF0F9;
+      --muted:  #93A0BC;
+      --gold:   #F0C24B;
+      --gold-soft: #F6D680;
+      --azure:  #45A6E8;
+      --azure-2:#2E83D4;
+      --maxw: 1080px;
+      --radius: 18px;
+      --pad-x: clamp(1.15rem, 5vw, 2.25rem);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--ink);
+      color: var(--text);
+      font-family: "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-size: 1.0625rem;
+      line-height: 1.85;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .wrap {
+      width: 100%;
+      max-width: var(--maxw);
+      margin-inline: auto;
+      padding-inline: var(--pad-x);
+    }
+
+    .brandmark {
+      font-family: "Reem Kufi", "IBM Plex Sans Arabic", sans-serif;
+      font-weight: 700;
+      letter-spacing: .5px;
+      line-height: 1;
+      background: linear-gradient(125deg, var(--gold) 0%, var(--gold-soft) 38%, var(--azure) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* ---------- header ---------- */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(12px);
+      background: rgba(10,15,30,.66);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      height: 64px;
+    }
+    .nav .logo { font-size: 1.6rem; }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.6rem;
+    }
+    .nav-links .link {
+      color: var(--muted);
+      font-size: .95rem;
+      transition: color .2s ease;
+    }
+    .nav-links .link:hover { color: var(--text); }
+    .nav .nav-cta { display: inline-flex; }
+
+    /* ---------- buttons ---------- */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: .8rem 1.5rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .25s ease, background .2s ease, border-color .2s ease;
+      white-space: nowrap;
+    }
+    .btn svg { width: 1.15em; height: 1.15em; flex: none; }
+    .btn-primary {
+      color: #07111f;
+      background: linear-gradient(135deg, var(--azure) 0%, var(--azure-2) 100%);
+      box-shadow: 0 10px 30px -10px rgba(69,166,232,.65);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 40px -12px rgba(69,166,232,.8); }
+    .btn-ghost {
+      color: var(--text);
+      background: transparent;
+      border-color: var(--line-2);
+    }
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold-soft); }
+    .btn-sm { padding: .55rem 1.1rem; font-size: .92rem; }
+
+    :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+
+    /* ---------- hero ---------- */
+    .hero {
+      position: relative;
+      padding-block: clamp(3.5rem, 11vw, 7rem) clamp(3rem, 9vw, 5.5rem);
+      text-align: center;
+      overflow: hidden;
+    }
+    .glow {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .glow::before, .glow::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: .5;
+    }
+    .glow::before {
+      width: 46vw; height: 46vw; max-width: 520px; max-height: 520px;
+      top: -8%; inset-inline-end: -6%;
+      background: radial-gradient(circle, rgba(240,194,75,.55), transparent 68%);
+    }
+    .glow::after {
+      width: 50vw; height: 50vw; max-width: 560px; max-height: 560px;
+      bottom: -16%; inset-inline-start: -10%;
+      background: radial-gradient(circle, rgba(69,166,232,.5), transparent 68%);
+    }
+    .hero .wrap { position: relative; z-index: 1; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      font-size: .82rem;
+      font-weight: 500;
+      color: var(--gold-soft);
+      padding: .4rem .9rem;
+      border: 1px solid var(--line-2);
+      border-radius: 999px;
+      background: rgba(240,194,75,.06);
+    }
+    .eyebrow .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 10px 1px var(--gold);
+    }
+    .hero-mark {
+      font-size: clamp(3.6rem, 16vw, 7.5rem);
+      margin: clamp(1.1rem, 4vw, 1.8rem) 0 .3rem;
+    }
+    .hero h1 {
+      font-weight: 600;
+      font-size: clamp(1.35rem, 5.2vw, 2.1rem);
+      line-height: 1.4;
+      margin: 0 auto .9rem;
+      max-width: 18ch;
+    }
+    .hero p {
+      color: var(--muted);
+      max-width: 46ch;
+      margin: 0 auto 1.9rem;
+      font-size: clamp(1rem, 2.6vw, 1.15rem);
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .85rem;
+      justify-content: center;
+    }
+
+    /* ---------- section shell ---------- */
+    .section { padding-block: clamp(3rem, 8vw, 5.5rem); }
+    .section-head { max-width: 40ch; margin: 0 auto clamp(2rem, 5vw, 3rem); text-align: center; }
+    .label {
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--azure);
+      letter-spacing: .5px;
+    }
+    .section-head h2 {
+      font-family: "Reem Kufi", sans-serif;
+      font-weight: 600;
+      font-size: clamp(1.7rem, 5.5vw, 2.5rem);
+      line-height: 1.25;
+      margin: .5rem 0 0;
+    }
+
+    /* ---------- features ---------- */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .card {
+      background: linear-gradient(180deg, var(--ink-2), var(--ink));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1.7rem 1.5rem;
+      transition: transform .25s ease, border-color .25s ease;
+    }
+    .card:hover { transform: translateY(-4px); border-color: var(--line-2); }
+    .card .ic {
+      width: 46px; height: 46px;
+      display: grid; place-items: center;
+      border-radius: 13px;
+      margin-bottom: 1.1rem;
+      background: rgba(69,166,232,.12);
+      border: 1px solid rgba(69,166,232,.25);
+      color: var(--azure);
+    }
+    .card .ic svg { width: 24px; height: 24px; }
+    .card h3 { margin: 0 0 .4rem; font-size: 1.2rem; font-weight: 600; }
+    .card p { margin: 0; color: var(--muted); font-size: .98rem; }
+
+    /* ---------- steps ---------- */
+    .steps {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      counter-reset: step;
+    }
+    .step {
+      position: relative;
+      padding: 1.5rem 1.5rem 1.5rem 1.5rem;
+      background: var(--ink-2);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+    .step .num {
+      font-family: "Reem Kufi", sans-serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      width: 44px; height: 44px;
+      display: grid; place-items: center;
+      border-radius: 12px;
+      margin-bottom: .9rem;
+      color: var(--gold);
+      background: rgba(240,194,75,.1);
+      border: 1px solid rgba(240,194,75,.28);
+    }
+    .step h3 { margin: 0 0 .35rem; font-size: 1.15rem; font-weight: 600; }
+    .step p { margin: 0; color: var(--muted); font-size: .98rem; }
+
+    /* ---------- cta band ---------- */
+    .cta-band { position: relative; }
+    .cta-box {
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      border-radius: 24px;
+      padding: clamp(2.5rem, 7vw, 4rem) var(--pad-x);
+      background:
+        radial-gradient(120% 140% at 80% 0%, rgba(240,194,75,.16), transparent 55%),
+        radial-gradient(120% 140% at 10% 100%, rgba(69,166,232,.2), transparent 55%),
+        var(--ink-2);
+      border: 1px solid var(--line-2);
+    }
+    .cta-box h2 {
+      font-family: "Reem Kufi", sans-serif;
+      font-weight: 600;
+      font-size: clamp(1.7rem, 6vw, 2.6rem);
+      margin: 0 0 1.4rem;
+    }
+
+    /* ---------- footer ---------- */
+    footer {
+      border-top: 1px solid var(--line);
+      margin-top: clamp(3rem, 8vw, 5rem);
+      padding-block: 2.2rem;
+    }
+    .foot {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .foot .logo { font-size: 1.4rem; }
+    .foot .meta { color: var(--muted); font-size: .9rem; }
+    .foot .meta a { color: var(--muted); transition: color .2s ease; }
+    .foot .meta a:hover { color: var(--gold-soft); }
+
+    /* ---------- reveal (progressive enhancement) ---------- */
+    .js .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
+    .js .reveal.in { opacity: 1; transform: none; }
+
+    @media (min-width: 720px) {
+      .grid, .steps { grid-template-columns: repeat(3, 1fr); }
+      .hero h1 { font-size: clamp(1.6rem, 3.4vw, 2.3rem); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .js .reveal { opacity: 1; transform: none; transition: none; }
+      .btn, .card { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="wrap nav">
+      <a href="#top" class="brandmark logo" aria-label="منتقم — الصفحة الرئيسية">منتقم</a>
+      <nav class="nav-links" aria-label="روابط الموقع">
+        <a class="link" href="#features">المزايا</a>
+        <a class="link" href="#how">كيف يعمل</a>
+        <a class="btn btn-primary btn-sm nav-cta" href="https://t.me/Inviteai_bot" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.94 4.27a1.2 1.2 0 0 0-1.62-1.18L2.66 9.86c-1.1.43-1.05 2 .07 2.36l4.4 1.37 1.66 5.13c.18.56.86.78 1.33.42l2.5-1.9 4.3 3.16c.6.45 1.46.13 1.62-.6l3.4-15.96ZM9.5 13.6l8.06-5.04-6.7 6.06a1 1 0 0 0-.31.6l-.27 2.04-.78-3.62Z"/></svg>
+          ابدأ
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ===================== HERO ===================== -->
+    <section class="hero">
+      <div class="glow" aria-hidden="true"></div>
+      <div class="wrap">
+        <span class="eyebrow reveal"><span class="dot"></span> بوت تيليجرام بالذكاء الاصطناعي</span>
+
+        <!-- عدّل اسم العلامة إذا تريد -->
+        <div class="brandmark hero-mark reveal">منتقم</div>
+
+        <!-- ============ عدّل النص حسب وظيفة البوت ============ -->
+        <h1 class="reveal">مساعدك الذكي — يجاوبك ويساعدك داخل تيليجرام مباشرة</h1>
+        <p class="reveal">كلّم <strong style="color:var(--text)">منتقم</strong> أو أضِفه لمجموعتك، واطلب أي شي. يفهم سؤالك ويردّ عليك بالعربي وبسرعة، على مدار الساعة.</p>
+        <!-- ================================================ -->
+
+        <div class="hero-actions reveal">
+          <a class="btn btn-primary" href="https://t.me/Inviteai_bot" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.94 4.27a1.2 1.2 0 0 0-1.62-1.18L2.66 9.86c-1.1.43-1.05 2 .07 2.36l4.4 1.37 1.66 5.13c.18.56.86.78 1.33.42l2.5-1.9 4.3 3.16c.6.45 1.46.13 1.62-.6l3.4-15.96ZM9.5 13.6l8.06-5.04-6.7 6.06a1 1 0 0 0-.31.6l-.27 2.04-.78-3.62Z"/></svg>
+            ابدأ على تيليجرام
+          </a>
+          <a class="btn btn-ghost" href="#how">كيف يعمل؟</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== FEATURES ===================== -->
+    <section class="section" id="features">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="label">لماذا منتقم</span>
+          <h2>كل اللي تحتاجه، داخل محادثة</h2>
+        </div>
+
+        <!-- ============ عدّل المزايا حسب البوت ============ -->
+        <div class="grid">
+          <article class="card reveal">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="3.2"/></svg></div>
+            <h3>ذكاء اصطناعي متطوّر</h3>
+            <p>يفهم أسئلتك ويعطيك إجابات دقيقة وواضحة في ثوانٍ معدودة.</p>
+          </article>
+
+          <article class="card reveal">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8A2.5 2.5 0 0 1 17.5 16H9l-4 4v-4H6.5"/><path d="M8.5 8.5h7M8.5 11.5h4"/></svg></div>
+            <h3>داخل تيليجرام مباشرة</h3>
+            <p>بدون تطبيقات إضافية — كلّمه لحالك أو أضِفه لمجموعتك ليساعد الجميع.</p>
+          </article>
+
+          <article class="card reveal">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/></svg></div>
+            <h3>سريع و 24/7</h3>
+            <p>ردود فورية بلغة عربية سليمة، في أي وقت ومن أي مكان.</p>
+          </article>
+        </div>
+        <!-- ============================================== -->
+      </div>
+    </section>
+
+    <!-- ===================== HOW IT WORKS ===================== -->
+    <section class="section" id="how">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="label">البداية</span>
+          <h2>تبدأ بثلاث خطوات</h2>
+        </div>
+
+        <div class="steps">
+          <article class="step reveal">
+            <div class="num">١</div>
+            <h3>افتح البوت</h3>
+            <p>اضغط زر البدء وافتح <span dir="ltr" style="color:var(--text)">@Inviteai_bot</span> على تيليجرام.</p>
+          </article>
+
+          <article class="step reveal">
+            <div class="num">٢</div>
+            <h3>اكتب طلبك</h3>
+            <p>ارسل سؤالك أو ما تحتاجه بكل بساطة — بدون أي تعقيد.</p>
+          </article>
+
+          <article class="step reveal">
+            <div class="num">٣</div>
+            <h3>خذ جوابك</h3>
+            <p>يردّ عليك منتقم فوراً بالمعلومة أو المساعدة اللي تريدها.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CTA ===================== -->
+    <section class="section cta-band">
+      <div class="wrap">
+        <div class="cta-box reveal">
+          <h2>جاهز تبدأ؟</h2>
+          <a class="btn btn-primary" href="https://t.me/Inviteai_bot" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.94 4.27a1.2 1.2 0 0 0-1.62-1.18L2.66 9.86c-1.1.43-1.05 2 .07 2.36l4.4 1.37 1.66 5.13c.18.56.86.78 1.33.42l2.5-1.9 4.3 3.16c.6.45 1.46.13 1.62-.6l3.4-15.96ZM9.5 13.6l8.06-5.04-6.7 6.06a1 1 0 0 0-.31.6l-.27 2.04-.78-3.62Z"/></svg>
+            ابدأ الآن على تيليجرام
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <span class="brandmark logo">منتقم</span>
+      <span class="meta">
+        <a href="https://t.me/Inviteai_bot" target="_blank" rel="noopener">تيليجرام</a>
+        &nbsp;·&nbsp; montaqim.com &nbsp;·&nbsp; © <span id="yr">2026</span>
+      </span>
+    </div>
+  </footer>
+
+  <script>
+    // progressive enhancement: لو JavaScript مطفّي، المحتوى يبقى ظاهر
+    document.documentElement.classList.add("js");
+    document.getElementById("yr").textContent = new Date().getFullYear();
+
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce || !("IntersectionObserver" in window)) {
+      document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("in"); });
+    } else {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.12 });
+      document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+    }
+  </script>
+</body>
+</html>
