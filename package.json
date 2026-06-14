@@ -1,0 +1,13 @@
+{
+  "name": "montaqim",
+  "private": true,
+  "version": "1.0.0",
+  "description": "صفحة الهبوط لبوت منتقم على تيليجرام — montaqim.com",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev"
+  },
+  "devDependencies": {
+    "wrangler": "^4"
+  }
+}
